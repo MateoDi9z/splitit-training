@@ -8,28 +8,31 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
-    ports:
-      - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    ports:
+       - "5432:5432"
 
-  server:
-#    build: ./server
-#    container_name: lemipay-server
-#    depends_on:
-#      - db
-#    environment:
-#      DATABASE_URL: ${DATABASE_URL}
-#    ports:
-#      - "${PORT_SERVER}:3000"
+  backend:
+    build: ./server
+    container_name: server
+    depends_on:
+      - db
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      SPRING_PROFILES_ACTIVE: docker
+    ports:
+      - "8080:8080"
 
-  client:
-#    build: ./client
-#    container_name: lemipay-client
-#    depends_on:
-#      - server
+#  frontend:
+#    build: ./frontend
+#    container_name: frontend
 #    ports:
-#      - "${PORT_CLIENT}:5173"
+#      - "3000:3000"
+#    depends_on:
+#      - backend
 
 volumes:
   postgres_data:
