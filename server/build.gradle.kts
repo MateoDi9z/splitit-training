@@ -21,6 +21,7 @@ repositories {
 
 dependencies {
 	implementation(platform("me.paulschwarz:spring-dotenv-bom:5.1.0"))
+	developmentOnly(platform("me.paulschwarz:spring-dotenv-bom:5.1.0"))
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 	implementation("org.springframework.boot:spring-boot-starter-webmvc")
