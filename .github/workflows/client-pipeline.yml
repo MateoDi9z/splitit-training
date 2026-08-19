@@ -21,6 +21,7 @@ jobs:
     name: Front (lint · format · typecheck · test · build)
     runs-on: ubuntu-latest
     timeout-minutes: 12
+
     defaults:
       run:
         working-directory: client
@@ -29,32 +30,27 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9
-
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: "pnpm"
-          cache-dependency-path: client/pnpm-lock.yaml
+          cache: "npm"
+          cache-dependency-path: client/package-lock.json
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: npm ci
 
       - name: Format check
-        run: pnpm format:check
+        run: npm run format:check
 
       - name: Lint
-        run: pnpm lint
+        run: npm run lint
 
       - name: Typecheck
-        run: pnpm tsc --noEmit
+        run: npx tsc --noEmit
 
       - name: Test
-        run: pnpm test
+        run: npm run test
 
       - name: Build
-        run: pnpm build
+        run: npm run build
