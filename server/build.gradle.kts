@@ -51,6 +51,9 @@ dependencies {
     // Web MVC (controllers, REST, etc.)
     implementation("org.springframework.boot:spring-boot-starter-webmvc")
 
+    // BCrypt sin starter-security (no cierra los endpoints)
+    implementation("org.springframework.security:spring-security-crypto")
+
     // Hot reload en desarrollo
     developmentOnly("org.springframework.boot:spring-boot-devtools")
 

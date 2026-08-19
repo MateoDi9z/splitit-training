@@ -1,4 +1,4 @@
-package edu.austral.splitit.training.server.infrastructure.persistence
+package edu.austral.splitit.training.server.infrastructure.persistence.entities
 
 import edu.austral.splitit.training.server.domain.model.User
 import edu.austral.splitit.training.server.domain.model.UserRole
