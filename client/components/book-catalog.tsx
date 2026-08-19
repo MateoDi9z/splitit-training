@@ -2,8 +2,10 @@
 
 import { useState } from "react"
 import { Search } from "lucide-react"
+import Link from "next/link"
 import { cn } from "@/lib/utils"
-import { books, filterBooksByTitle } from "@/lib/books"
+import { filterBooksByTitle } from "@/lib/books"
+import { useBooks } from "@/lib/library"
 import {
   Card,
   CardDescription,
@@ -11,8 +13,10 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
+import type { Book } from "@/lib/types"
 
 export function BookCatalog() {
+  const { books, loading, error } = useBooks()
   const [query, setQuery] = useState("")
   const results = filterBooksByTitle(query, books)
 
@@ -36,18 +40,31 @@ export function BookCatalog() {
         </div>
       </form>
 
-      {results.length === 0 ? (
+      {loading ? (
+        <p className="text-sm text-muted-foreground">Cargando catálogo...</p>
+      ) : error ? (
+        <p className="text-sm text-muted-foreground">{error}</p>
+      ) : results.length === 0 ? (
         <p className="text-sm text-muted-foreground">
-          No hay libros que coincidan con “{query.trim()}”.
+          {query.trim()
+            ? `No hay libros que coincidan con “${query.trim()}”.`
+            : "No hay libros en el catálogo."}
         </p>
-      ) : (
-        <ul className="grid gap-3">
-          {results.map((book) => {
-            const available = book.availableCopies > 0
+      ) : BookItem(results)}
+    </div>
+  )
+}
 
-            return (
-              <li key={book.id}>
-                <Card>
+function BookItem(books: Book[]) {
+    return (
+      <ul className="grid gap-3">
+        {books.map((book) => {
+          const available = book.availableCopies > 0
+
+          return (
+            <li key={book.id}>
+              <Link href={`/books/${book.id}`} className="block">
+                <Card className="transition-colors hover:bg-muted/40">
                   <CardHeader className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                     <div className="space-y-1">
                       <CardTitle>{book.title}</CardTitle>
@@ -65,11 +82,10 @@ export function BookCatalog() {
                     </span>
                   </CardHeader>
                 </Card>
-              </li>
-            )
-          })}
-        </ul>
-      )}
-    </div>
-  )
+              </Link>
+            </li>
+          )
+        })}
+      </ul>
+    )
 }
