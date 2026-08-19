@@ -20,7 +20,7 @@ plugins {
     id("org.jlleitschuh.gradle.ktlint") version "14.2.0"
 
     // Análisis estático de código (code smells, complejidad, bugs)
-    id("io.gitlab.arturbosch.detekt") version "1.23.8"
+    id("dev.detekt") version "2.0.0-alpha.3"
 }
 
 group = "edu.austral.splitit.training"
@@ -96,6 +96,10 @@ ktlint {
     version.set("1.5.0")
     android.set(false)
     ignoreFailures.set(false)
+    reporters {
+        reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.PLAIN)
+        reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.CHECKSTYLE)
+    }
 }
 
 // Configuración de detekt
