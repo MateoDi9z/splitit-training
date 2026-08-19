@@ -26,6 +26,7 @@ Si el backend responde `pong` a `/api/ping`, estás en negocio.
 splitit-training/
 ├── client/              # Next.js
 ├── server/              # Spring Boot (Kotlin)
+├── hooks/               # git hooks (pre-commit)
 ├── docker-compose.yml
 └── .env.example
 ```
@@ -49,6 +50,16 @@ docker compose up --build
 | Postgres  | `localhost:5432`                         |
 
 Hay una página de smoke test en `/test` que pega al ping del backend.
+
+## Git hooks
+
+Git no versiona lo que vive en `.git/hooks`. Después del clone:
+
+```bash
+./hooks/install.sh
+```
+
+Eso instala el `pre-commit` (format, lint y typecheck del client).
 
 ## Variables de entorno
 

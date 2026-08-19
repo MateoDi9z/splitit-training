@@ -21,25 +21,17 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html
-      lang="es"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
+    <html lang="es" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
       <body className="flex min-h-full flex-col">
         <header className="border-b">
           <div className="mx-auto flex h-14 w-full max-w-2xl items-center px-4">
-            <Link
-              href="/"
-              className="flex items-center gap-2 text-sm font-medium tracking-tight"
-            >
+            <Link href="/" className="flex items-center gap-2 text-sm font-medium tracking-tight">
               <BookOpen className="size-4" aria-hidden />
               Biblioteca
             </Link>
           </div>
         </header>
-        <main className="mx-auto flex w-full max-w-2xl flex-1 flex-col px-4 py-10">
-          {children}
-        </main>
+        <main className="mx-auto flex w-full max-w-2xl flex-1 flex-col px-4 py-10">{children}</main>
       </body>
     </html>
   );

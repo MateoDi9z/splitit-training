@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
+import { config as dotenvConfig } from "dotenv";
 
-require('dotenv')
-    .config({ path: '../.env' })
+dotenvConfig({ path: "../.env" });
 
 const nextConfig: NextConfig = {
   output: "standalone",

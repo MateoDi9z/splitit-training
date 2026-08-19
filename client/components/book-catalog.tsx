@@ -1,26 +1,22 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { AlertCircleIcon, BookXIcon, SearchIcon } from "lucide-react"
-import Link from "next/link"
-import { filterBooksByTitle } from "@/lib/books"
-import { useBooks } from "@/lib/library"
-import type { Book } from "@/lib/types"
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
-import { Badge } from "@/components/ui/badge"
+import { useState } from "react";
+import { AlertCircleIcon, BookXIcon, SearchIcon } from "lucide-react";
+import Link from "next/link";
+import { filterBooksByTitle } from "@/lib/books";
+import { useBooks } from "@/lib/library";
+import type { Book } from "@/lib/types";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
 import {
   Empty,
   EmptyDescription,
   EmptyHeader,
   EmptyMedia,
   EmptyTitle,
-} from "@/components/ui/empty"
-import { Field, FieldLabel } from "@/components/ui/field"
-import {
-  InputGroup,
-  InputGroupAddon,
-  InputGroupInput,
-} from "@/components/ui/input-group"
+} from "@/components/ui/empty";
+import { Field, FieldLabel } from "@/components/ui/field";
+import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import {
   Item,
   ItemActions,
@@ -28,14 +24,14 @@ import {
   ItemDescription,
   ItemGroup,
   ItemTitle,
-} from "@/components/ui/item"
-import { Spinner } from "@/components/ui/spinner"
+} from "@/components/ui/item";
+import { Spinner } from "@/components/ui/spinner";
 
 export function BookCatalog() {
-  const { books, loading, error } = useBooks()
-  const [query, setQuery] = useState("")
-  const results = filterBooksByTitle(query, books)
-  const trimmedQuery = query.trim()
+  const { books, loading, error } = useBooks();
+  const [query, setQuery] = useState("");
+  const results = filterBooksByTitle(query, books);
+  const trimmedQuery = query.trim();
 
   return (
     <div className="flex flex-col gap-6">
@@ -67,9 +63,7 @@ export function BookCatalog() {
               <Spinner />
             </EmptyMedia>
             <EmptyTitle>Cargando catálogo</EmptyTitle>
-            <EmptyDescription>
-              Estamos buscando los libros disponibles.
-            </EmptyDescription>
+            <EmptyDescription>Estamos buscando los libros disponibles.</EmptyDescription>
           </EmptyHeader>
         </Empty>
       ) : error ? (
@@ -84,9 +78,7 @@ export function BookCatalog() {
             <EmptyMedia variant="icon">
               <BookXIcon />
             </EmptyMedia>
-            <EmptyTitle>
-              {trimmedQuery ? "Sin resultados" : "Catálogo vacío"}
-            </EmptyTitle>
+            <EmptyTitle>{trimmedQuery ? "Sin resultados" : "Catálogo vacío"}</EmptyTitle>
             <EmptyDescription>
               {trimmedQuery
                 ? `No hay libros que coincidan con “${trimmedQuery}”.`
@@ -98,21 +90,17 @@ export function BookCatalog() {
         <BookList books={results} />
       )}
     </div>
-  )
+  );
 }
 
 function BookList({ books }: { books: Book[] }) {
   return (
     <ItemGroup>
       {books.map((book) => {
-        const available = book.availableCopies > 0
+        const available = book.availableCopies > 0;
 
         return (
-          <Item
-            key={book.id}
-            variant="outline"
-            render={<Link href={`/books/${book.id}`} />}
-          >
+          <Item key={book.id} variant="outline" render={<Link href={`/books/${book.id}`} />}>
             <ItemContent>
               <ItemTitle>{book.title}</ItemTitle>
               <ItemDescription>{book.author}</ItemDescription>
@@ -125,8 +113,8 @@ function BookList({ books }: { books: Book[] }) {
               </Badge>
             </ItemActions>
           </Item>
-        )
+        );
       })}
     </ItemGroup>
-  )
+  );
 }
