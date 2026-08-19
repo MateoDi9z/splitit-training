@@ -1,4 +1,4 @@
-package edu.austral.splitit.training.server
+package edu.austral.splitit.training.server.infrastructure.config
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
