@@ -12,11 +12,3 @@ export type Loan = {
   dueDate: string
   returnedAt: string | null
 }
-
-export function getBooks() {
-  return request<Book[]>("/api/books")
-}
-
-export function getBook(id: number) {
-  return request<Book>(`/api/books/${id}`)
-}

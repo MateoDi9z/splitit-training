@@ -37,7 +37,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             </Link>
           </div>
         </header>
-        {children}
+        <main className="mx-auto flex w-full max-w-2xl flex-1 flex-col px-4 py-10">
+          {children}
+        </main>
       </body>
     </html>
   );

@@ -7,9 +7,9 @@ import {
   getBook,
   getBooks,
   getLoans,
-  type Book,
-  type Loan,
 } from "@/lib/api"
+
+import type { Book, Loan } from "@/lib/types"
 import { isLoanActive } from "@/lib/books"
 
 function errorMessage(error: unknown, fallback: string) {

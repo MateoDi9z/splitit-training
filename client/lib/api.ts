@@ -1,4 +1,4 @@
-import type { Loan } from "./types"
+import type { Loan, Book } from "./types"
 
 export class ApiError extends Error {
   constructor(
@@ -60,6 +60,18 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
 
   return response.json() as Promise<T>
 }
+
+// Books
+// 
+export function getBooks() {
+  return request<Book[]>("/api/books")
+}
+
+export function getBook(id: number) {
+  return request<Book>(`/api/books/${id}`)
+}
+
+// Loans
 
 export function getLoans() {
   return request<Loan[]>("/api/loans")
