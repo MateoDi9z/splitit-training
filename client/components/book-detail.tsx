@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
-import Link from "next/link"
-import { AlertCircleIcon, BookXIcon, CalendarIcon } from "lucide-react"
-import { formatDueDate } from "@/lib/books"
-import { useBook } from "@/lib/library"
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
-import { Badge } from "@/components/ui/badge"
+import Link from "next/link";
+import { AlertCircleIcon, BookXIcon, CalendarIcon } from "lucide-react";
+import { formatDueDate } from "@/lib/books";
+import { useBook } from "@/lib/library";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -13,8 +13,8 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb"
-import { Button, buttonVariants } from "@/components/ui/button"
+} from "@/components/ui/breadcrumb";
+import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Card,
   CardAction,
@@ -23,7 +23,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from "@/components/ui/card";
 import {
   Empty,
   EmptyContent,
@@ -31,12 +31,12 @@ import {
   EmptyHeader,
   EmptyMedia,
   EmptyTitle,
-} from "@/components/ui/empty"
-import { Spinner } from "@/components/ui/spinner"
+} from "@/components/ui/empty";
+import { Spinner } from "@/components/ui/spinner";
 
 export function BookDetail({ bookId }: { bookId: number }) {
   const { book, loan, loading, error, notFound, reserving, reserveError, reserve } =
-    useBook(bookId)
+    useBook(bookId);
 
   if (loading) {
     return (
@@ -48,7 +48,7 @@ export function BookDetail({ bookId }: { bookId: number }) {
           <EmptyTitle>Cargando libro</EmptyTitle>
         </EmptyHeader>
       </Empty>
-    )
+    );
   }
 
   if (notFound) {
@@ -61,9 +61,7 @@ export function BookDetail({ bookId }: { bookId: number }) {
               <BookXIcon />
             </EmptyMedia>
             <EmptyTitle>No encontramos ese libro</EmptyTitle>
-            <EmptyDescription>
-              El libro no existe o ya no está en el catálogo.
-            </EmptyDescription>
+            <EmptyDescription>El libro no existe o ya no está en el catálogo.</EmptyDescription>
           </EmptyHeader>
           <EmptyContent>
             <Link href="/" className={buttonVariants()}>
@@ -72,7 +70,7 @@ export function BookDetail({ bookId }: { bookId: number }) {
           </EmptyContent>
         </Empty>
       </div>
-    )
+    );
   }
 
   if (error || !book) {
@@ -82,15 +80,13 @@ export function BookDetail({ bookId }: { bookId: number }) {
         <Alert variant="destructive">
           <AlertCircleIcon />
           <AlertTitle>No se pudo cargar el libro</AlertTitle>
-          <AlertDescription>
-            {error ?? "No pudimos cargar el libro."}
-          </AlertDescription>
+          <AlertDescription>{error ?? "No pudimos cargar el libro."}</AlertDescription>
         </Alert>
       </div>
-    )
+    );
   }
 
-  const available = book.availableCopies > 0
+  const available = book.availableCopies > 0;
 
   return (
     <div className="flex flex-col gap-8">
@@ -132,7 +128,7 @@ export function BookDetail({ bookId }: { bookId: number }) {
             <Button
               disabled={!available || reserving}
               onClick={() => {
-                void reserve()
+                void reserve();
               }}
             >
               {reserving ? <Spinner data-icon="inline-start" /> : null}
@@ -142,7 +138,7 @@ export function BookDetail({ bookId }: { bookId: number }) {
         ) : null}
       </Card>
     </div>
-  )
+  );
 }
 
 function CatalogBreadcrumb({ page }: { page: string }) {
@@ -158,5 +154,5 @@ function CatalogBreadcrumb({ page }: { page: string }) {
         </BreadcrumbItem>
       </BreadcrumbList>
     </Breadcrumb>
-  )
+  );
 }
