@@ -12,7 +12,7 @@ if [ -d "client" ]; then
   echo "📦  Client"
   cd client
 
-  echo "   → Format check..."
+  echo " (pnpm format:check)  → Format check..."
   if ! pnpm format:check > /dev/null 2>&1; then
     echo "   ⚠️  Formatting issues found. Fixing..."
     pnpm format
@@ -21,11 +21,11 @@ if [ -d "client" ]; then
   fi
   echo "   ✅  Format OK"
 
-  echo "   → Lint..."
+  echo " (pnpm lint)  → Lint..."
   pnpm lint
   echo "   ✅  Lint OK"
 
-  echo "   → Typecheck..."
+  echo " (pnpm tsc --noEmit)  → Typecheck..."
   pnpm tsc --noEmit
   echo "   ✅  Typecheck OK"
 
@@ -40,7 +40,7 @@ if [ -d "server" ]; then
   echo "🖥️   Server"
   cd server
 
-  echo "   → Format check (ktlint)..."
+  echo " (./gradlew ktlintCheck)  → Format check (ktlint)..."
   if ! ./gradlew ktlintCheck --quiet; then
     echo "   ⚠️  Formatting issues found. Fixing..."
     ./gradlew ktlintFormat --quiet
@@ -49,11 +49,11 @@ if [ -d "server" ]; then
   fi
   echo "   ✅  Format OK"
 
-  echo "   → Static analysis (detekt)..."
+  echo " (./gradlew detekt)  → Static analysis (detekt)..."
   ./gradlew detekt --quiet
   echo "   ✅  Static analysis OK"
 
-  echo "   → Compile..."
+  echo " (./gradlew compileKotlin)  → Compile..."
   ./gradlew compileKotlin --quiet
   echo "   ✅  Compile OK"
 
