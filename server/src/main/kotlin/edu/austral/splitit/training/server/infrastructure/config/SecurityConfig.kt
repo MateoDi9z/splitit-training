@@ -2,6 +2,7 @@ package edu.austral.splitit.training.server.infrastructure.config
 
 import edu.austral.splitit.training.server.application.port.TokenProvider
 import edu.austral.splitit.training.server.infrastructure.security.JwtAuthenticationFilter
+import jakarta.servlet.DispatcherType
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -28,6 +29,7 @@ class SecurityConfig(
             .cors { }
             .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
             .authorizeHttpRequests {
+                it.dispatcherTypeMatchers(DispatcherType.ERROR, DispatcherType.FORWARD).permitAll()
                 it.requestMatchers("/api/auth/**", "/api/ping").permitAll()
                 it.anyRequest().authenticated()
             }.httpBasic { it.disable() }

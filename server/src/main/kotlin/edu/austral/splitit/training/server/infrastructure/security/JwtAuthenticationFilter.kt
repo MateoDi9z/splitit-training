@@ -9,12 +9,15 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource
+import org.springframework.security.web.context.RequestAttributeSecurityContextRepository
+import org.springframework.security.web.context.SecurityContextRepository
 import org.springframework.web.filter.OncePerRequestFilter
 
 const val BEARER_PREFIX = "Bearer "
 
 class JwtAuthenticationFilter(
     private val tokenProvider: TokenProvider,
+    private val securityContextRepository: SecurityContextRepository = RequestAttributeSecurityContextRepository(),
 ) : OncePerRequestFilter() {
     override fun doFilterInternal(
         request: HttpServletRequest,
@@ -33,7 +36,10 @@ class JwtAuthenticationFilter(
                         listOf(SimpleGrantedAuthority("ROLE_${authenticatedUser.role.name}")),
                     )
                 authentication.details = WebAuthenticationDetailsSource().buildDetails(request)
-                SecurityContextHolder.getContext().authentication = authentication
+                val context = SecurityContextHolder.createEmptyContext()
+                context.authentication = authentication
+                SecurityContextHolder.setContext(context)
+                securityContextRepository.saveContext(context, request, response)
             }
         }
         filterChain.doFilter(request, response)
