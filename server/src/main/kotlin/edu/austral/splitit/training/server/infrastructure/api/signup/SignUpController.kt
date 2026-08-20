@@ -1,10 +1,9 @@
-package edu.austral.splitit.training.server.infrastructure.api.controller
+package edu.austral.splitit.training.server.infrastructure.api.signup
 
 import edu.austral.splitit.training.server.application.exception.EmailAlreadyInUseException
 import edu.austral.splitit.training.server.application.service.SignUpService
-import edu.austral.splitit.training.server.infrastructure.api.dto.SignUpRequest
-import edu.austral.splitit.training.server.infrastructure.api.dto.SignUpResponse
-import edu.austral.splitit.training.server.infrastructure.api.dto.toSignUpResponse
+import edu.austral.splitit.training.server.infrastructure.api.UserResponse
+import edu.austral.splitit.training.server.infrastructure.api.toUserResponse
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -20,9 +19,9 @@ class SignUpController(
     @PostMapping("/api/auth/signup")
     fun signUp(
         @Valid @RequestBody request: SignUpRequest,
-    ): ResponseEntity<SignUpResponse> {
+    ): ResponseEntity<UserResponse> {
         val user = signUpService.signUp(request.email, request.password)
-        return ResponseEntity.status(HttpStatus.CREATED).body(user.toSignUpResponse())
+        return ResponseEntity.status(HttpStatus.CREATED).body(user.toUserResponse())
     }
 
     @ExceptionHandler(EmailAlreadyInUseException::class)

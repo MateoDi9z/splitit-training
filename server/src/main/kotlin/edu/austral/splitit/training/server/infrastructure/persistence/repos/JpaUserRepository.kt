@@ -13,4 +13,6 @@ class JpaUserRepository(
     override fun save(user: User): User = userJpaRepository.save(user.toEntity()).toDomain()
 
     override fun existsByEmail(email: String): Boolean = userJpaRepository.existsByEmail(email)
+
+    override fun findByEmail(email: String): User? = userJpaRepository.findByEmail(email)?.toDomain()
 }

@@ -1,4 +1,4 @@
-package edu.austral.splitit.training.server.infrastructure.api.dto
+package edu.austral.splitit.training.server.infrastructure.api.signup
 
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotBlank
