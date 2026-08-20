@@ -51,6 +51,12 @@ dependencies {
     // Web MVC (controllers, REST, etc.)
     implementation("org.springframework.boot:spring-boot-starter-webmvc")
 
+    // Spring Security (JWT se firma con jjwt; BCrypt viene en este starter)
+    implementation("org.springframework.boot:spring-boot-starter-security")
+    implementation("io.jsonwebtoken:jjwt-api:0.12.6")
+    runtimeOnly("io.jsonwebtoken:jjwt-impl:0.12.6")
+    runtimeOnly("io.jsonwebtoken:jjwt-orgjson:0.12.6")
+
     // Hot reload en desarrollo
     developmentOnly("org.springframework.boot:spring-boot-devtools")
 
@@ -70,6 +76,7 @@ dependencies {
     // ========== Test ==========
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:5.4.0")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 

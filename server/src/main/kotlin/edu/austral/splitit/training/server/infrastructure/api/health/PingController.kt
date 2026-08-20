@@ -1,4 +1,4 @@
-package edu.austral.splitit.training.server.infrastructure.api.controller
+package edu.austral.splitit.training.server.infrastructure.api.health
 
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController

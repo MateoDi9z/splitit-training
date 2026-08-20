@@ -1,4 +1,5 @@
-import type { Loan, Book } from "./types";
+import { clearSession, getAuthToken } from "@/lib/auth-storage";
+import type { Book, Loan, LoginResponse, User } from "./types";
 
 export class ApiError extends Error {
   constructor(
@@ -36,6 +37,7 @@ async function readErrorMessage(response: Response) {
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
   let response: Response;
+  const token = getAuthToken();
 
   try {
     response = await fetch(apiUrl(path), {
@@ -43,6 +45,7 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
       headers: {
         Accept: "application/json",
         ...(init?.body ? { "Content-Type": "application/json" } : {}),
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
         ...init?.headers,
       },
     });
@@ -51,6 +54,9 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
   }
 
   if (!response.ok) {
+    if (response.status === 401 && !path.startsWith("/api/auth/")) {
+      clearSession();
+    }
     throw new ApiError(response.status, await readErrorMessage(response));
   }
 
@@ -59,6 +65,20 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
   }
 
   return response.json() as Promise<T>;
+}
+
+export function signUp(email: string, password: string) {
+  return request<User>("/api/auth/signup", {
+    method: "POST",
+    body: JSON.stringify({ email, password }),
+  });
+}
+
+export function login(email: string, password: string) {
+  return request<LoginResponse>("/api/auth/login", {
+    method: "POST",
+    body: JSON.stringify({ email, password }),
+  });
 }
 
 // Books

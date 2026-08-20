@@ -1,0 +1,140 @@
+@baseUrl = http://localhost:8080
+@password = secret123
+
+### Ping
+GET {{baseUrl}}/api/ping
+
+> {%
+client.test("200 pong", function() {
+  client.assert(response.status === 200, "Expected 200");
+});
+%}
+
+### Signup OK
+POST {{baseUrl}}/api/auth/signup
+Content-Type: application/json
+
+{
+  "email": "socio-{{$timestamp}}@mail.com",
+  "password": "{{password}}"
+}
+
+> {%
+client.test("201 Created", function() {
+  client.assert(response.status === 201, "Expected 201");
+  client.assert(response.body.role === "ASSOCIATE", "Expected ASSOCIATE");
+});
+client.global.set("email", response.body.email);
+%}
+
+### Signup duplicate -> 409
+POST {{baseUrl}}/api/auth/signup
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "password": "{{password}}"
+}
+
+> {%
+client.test("409 Conflict", function() {
+  client.assert(response.status === 409, "Expected 409");
+});
+%}
+
+### Signup invalid email -> 400
+POST {{baseUrl}}/api/auth/signup
+Content-Type: application/json
+
+{
+  "email": "not-an-email",
+  "password": "{{password}}"
+}
+
+> {%
+client.test("400 Bad Request", function() {
+  client.assert(response.status === 400, "Expected 400");
+});
+%}
+
+### Signup short password -> 400
+POST {{baseUrl}}/api/auth/signup
+Content-Type: application/json
+
+{
+  "email": "otro@mail.com",
+  "password": "short"
+}
+
+> {%
+client.test("400 Bad Request", function() {
+  client.assert(response.status === 400, "Expected 400");
+});
+%}
+
+### Login OK
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "password": "{{password}}"
+}
+
+> {%
+client.test("200 OK", function() {
+  client.assert(response.status === 200, "Expected 200");
+  client.assert(response.body.token !== null && response.body.token.length > 0, "Expected token");
+});
+client.global.set("token", response.body.token);
+%}
+
+### Login wrong password -> 401
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "password": "wrong-password"
+}
+
+> {%
+client.test("401 Unauthorized", function() {
+  client.assert(response.status === 401, "Expected 401");
+});
+%}
+
+### Login unknown email -> 401
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "nobody@mail.com",
+  "password": "{{password}}"
+}
+
+> {%
+client.test("401 Unauthorized", function() {
+  client.assert(response.status === 401, "Expected 401");
+});
+%}
+
+### Protected without token -> 401
+GET {{baseUrl}}/api/books
+
+> {%
+client.test("401 Unauthorized", function() {
+  client.assert(response.status === 401, "Expected 401");
+});
+%}
+
+### Protected with token (no 401)
+GET {{baseUrl}}/api/books
+Authorization: Bearer {{token}}
+
+> {%
+client.test("JWT accepted", function() {
+  client.assert(response.status !== 401, "Token should be accepted");
+  client.assert(response.status !== 403, "Token should be accepted");
+});
+%}
